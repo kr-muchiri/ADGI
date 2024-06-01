@@ -163,25 +163,19 @@ if 'weights' not in st.session_state:
         'Growth Potential': 0.10
     }
 
-def update_weights(changed_key, new_value):
-    other_keys = [key for key in st.session_state.weights.keys() if key != changed_key]
-    total_other_weights = sum([st.session_state.weights[key] for key in other_keys])
-    adjustment_factor = (1 - new_value) / total_other_weights
+def update_weights(new_values):
+    total_weight = sum(new_values.values())
+    for key in new_values:
+        st.session_state.weights[key] = new_values[key] / total_weight
 
-    for key in other_keys:
-        st.session_state.weights[key] *= adjustment_factor
+new_weights = {}
+new_weights['AI Adoption Rate'] = st.sidebar.slider("AI Adoption Rate Weight", 0.0, 1.0, st.session_state.weights['AI Adoption Rate'], 0.01)
+new_weights['Efficiency Improvement'] = st.sidebar.slider("Efficiency Improvement Weight", 0.0, 1.0, st.session_state.weights['Efficiency Improvement'], 0.01)
+new_weights['Revenue Growth'] = st.sidebar.slider("Revenue Growth Weight", 0.0, 1.0, st.session_state.weights['Revenue Growth'], 0.01)
+new_weights['Market Size'] = st.sidebar.slider("Market Size Weight", 0.0, 1.0, st.session_state.weights['Market Size'], 0.01)
+new_weights['Growth Potential'] = st.sidebar.slider("Growth Potential Weight", 0.0, 1.0, st.session_state.weights['Growth Potential'], 0.01)
 
-    st.session_state.weights[changed_key] = new_value
-
-    total_weight = sum(st.session_state.weights.values())
-    for key in st.session_state.weights:
-        st.session_state.weights[key] /= total_weight
-
-ai_weight = st.sidebar.slider("AI Adoption Rate Weight", 0.0, 1.0, st.session_state.weights['AI Adoption Rate'], 0.01, on_change=update_weights, args=("AI Adoption Rate",))
-eff_weight = st.sidebar.slider("Efficiency Improvement Weight", 0.0, 1.0, st.session_state.weights['Efficiency Improvement'], 0.01, on_change=update_weights, args=("Efficiency Improvement",))
-rev_weight = st.sidebar.slider("Revenue Growth Weight", 0.0, 1.0, st.session_state.weights['Revenue Growth'], 0.01, on_change=update_weights, args=("Revenue Growth",))
-market_weight = st.sidebar.slider("Market Size Weight", 0.0, 1.0, st.session_state.weights['Market Size'], 0.01, on_change=update_weights, args=("Market Size",))
-growth_weight = st.sidebar.slider("Growth Potential Weight", 0.0, 1.0, st.session_state.weights['Growth Potential'], 0.01, on_change=update_weights, args=("Growth Potential",))
+update_weights(new_weights)
 
 # Calculate AIDGI for each industry
 df['AIDGI'] = df.apply(calculate_aidgi, axis=1, args=(
