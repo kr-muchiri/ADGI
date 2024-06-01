@@ -152,22 +152,45 @@ Use the sliders in the sidebar to adjust the weights of each metric and see how 
 
 # Sidebar for weight adjustments
 st.sidebar.header("Adjust Weights")
-ai_weight = st.sidebar.slider("AI Adoption Rate Weight", 0.0, 1.0, 0.35, 0.01)
-eff_weight = st.sidebar.slider("Efficiency Improvement Weight", 0.0, 1.0, 0.25, 0.01)
-rev_weight = st.sidebar.slider("Revenue Growth Weight", 0.0, 1.0, 0.20, 0.01)
-market_weight = st.sidebar.slider("Market Size Weight", 0.0, 1.0, 0.10, 0.01)
-growth_weight = st.sidebar.slider("Growth Potential Weight", 0.0, 1.0, 0.10, 0.01)
 
-# Normalize weights
-total_weight = ai_weight + eff_weight + rev_weight + market_weight + growth_weight
-ai_weight /= total_weight
-eff_weight /= total_weight
-rev_weight /= total_weight
-market_weight /= total_weight
-growth_weight /= total_weight
+# Initialize weights with state management
+if 'weights' not in st.session_state:
+    st.session_state.weights = {
+        'AI Adoption Rate': 0.35,
+        'Efficiency Improvement': 0.25,
+        'Revenue Growth': 0.20,
+        'Market Size': 0.10,
+        'Growth Potential': 0.10
+    }
+
+def update_weights(changed_key, new_value):
+    other_keys = [key for key in st.session_state.weights.keys() if key != changed_key]
+    total_other_weights = sum([st.session_state.weights[key] for key in other_keys])
+    adjustment_factor = (1 - new_value) / total_other_weights
+
+    for key in other_keys:
+        st.session_state.weights[key] *= adjustment_factor
+
+    st.session_state.weights[changed_key] = new_value
+
+    total_weight = sum(st.session_state.weights.values())
+    for key in st.session_state.weights:
+        st.session_state.weights[key] /= total_weight
+
+ai_weight = st.sidebar.slider("AI Adoption Rate Weight", 0.0, 1.0, st.session_state.weights['AI Adoption Rate'], 0.01, on_change=update_weights, args=("AI Adoption Rate",))
+eff_weight = st.sidebar.slider("Efficiency Improvement Weight", 0.0, 1.0, st.session_state.weights['Efficiency Improvement'], 0.01, on_change=update_weights, args=("Efficiency Improvement",))
+rev_weight = st.sidebar.slider("Revenue Growth Weight", 0.0, 1.0, st.session_state.weights['Revenue Growth'], 0.01, on_change=update_weights, args=("Revenue Growth",))
+market_weight = st.sidebar.slider("Market Size Weight", 0.0, 1.0, st.session_state.weights['Market Size'], 0.01, on_change=update_weights, args=("Market Size",))
+growth_weight = st.sidebar.slider("Growth Potential Weight", 0.0, 1.0, st.session_state.weights['Growth Potential'], 0.01, on_change=update_weights, args=("Growth Potential",))
 
 # Calculate AIDGI for each industry
-df['AIDGI'] = df.apply(calculate_aidgi, axis=1, args=(ai_weight, eff_weight, rev_weight, market_weight, growth_weight))
+df['AIDGI'] = df.apply(calculate_aidgi, axis=1, args=(
+    st.session_state.weights['AI Adoption Rate'],
+    st.session_state.weights['Efficiency Improvement'],
+    st.session_state.weights['Revenue Growth'],
+    st.session_state.weights['Market Size'],
+    st.session_state.weights['Growth Potential']
+))
 df.sort_values(by='AIDGI', ascending=False, inplace=True)
 
 # Display DataFrame with clear metric labels
@@ -192,7 +215,13 @@ st.plotly_chart(fig, use_container_width=True)
 # Additional Visualizations
 st.markdown("### Weight Distribution")
 labels = ['AI Adoption Rate', 'Efficiency Improvement', 'Revenue Growth', 'Market Size', 'Growth Potential']
-values = [ai_weight, eff_weight, rev_weight, market_weight, growth_weight]
+values = [
+    st.session_state.weights['AI Adoption Rate'],
+    st.session_state.weights['Efficiency Improvement'],
+    st.session_state.weights['Revenue Growth'],
+    st.session_state.weights['Market Size'],
+    st.session_state.weights['Growth Potential']
+]
 fig_pie = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
 fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
 st.plotly_chart(fig_pie, use_container_width=True)
