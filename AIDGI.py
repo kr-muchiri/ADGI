@@ -11,21 +11,21 @@ st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="
 st.markdown("""
 ## About This App
 
-This app was created for the Sequoia Summer Internship application to showcase my skills in data analysis, interactive visualization, and understanding AI's impact on industries.
+Welcome to the AI Disruption and Growth Index (AIDGI) app! This application was developed as part of my application for the Sequoia Summer Internship Opportunity. It showcases my technical skills in data analysis, interactive visualization, and my understanding of AI's transformative impact on various industries.
 
 ### Key Points
 
-1. **Metrics**: AI Adoption Rate, Efficiency Improvement, Revenue Growth, Market Size, and Growth Potential.
-2. **Analysis**: AIDGI is calculated using a weighted sum of these metrics, adjustable dynamically.
-3. **Visualizations**: Explore AI's impact across industries through bar charts, scatter plots, and pie charts.
+1. **Metrics Selection**: The key metrics chosen to evaluate AI's impact include AI Adoption Rate, Efficiency Improvement, Revenue Growth, Market Size, and Growth Potential.
+2. **Weighted Analysis**: The AIDGI is computed using a weighted sum of these metrics. The weights can be adjusted dynamically to explore different scenarios.
+3. **Interactive Visualizations**: The app features interactive bar charts, scatter plots, and pie charts to help visualize AI's impact across industries.
 
 ### Skills Demonstrated
 
-- **Technical**: Proficient in Python, data analysis with pandas, and visualizations with Plotly.
-- **Communication**: Clear explanation of complex concepts.
-- **Passion**: Deep interest in AI and technology's transformative potential.
+- **Technical Proficiency**: Expertise in Python, data analysis with pandas, and creating interactive visualizations with Plotly.
+- **Clear Communication**: Ability to explain complex concepts in a clear and concise manner.
+- **Passion for Technology**: A strong interest in how AI and technology are reshaping industries and creating opportunities for growth.
 
-Looking forward to contributing my skills and passion to the Sequoia team.
+I am excited about the possibility of contributing my skills and enthusiasm for technology to the Sequoia team.
 
 Best regards,
 Muchiri Kahwai
@@ -97,12 +97,21 @@ st.markdown('<div class="title">AI Disruption and Growth Index (AIDGI)</div>', u
 st.markdown("""
 <div class="header">Introduction</div>
 
-AI is transforming industries by improving efficiency, driving revenue growth, and creating new opportunities. 
-The AI Disruption and Growth Index (AIDGI) quantifies AI's impact across sectors using key metrics: AI Adoption Rate, Efficiency Improvement, Revenue Growth, Market Size, and Growth Potential.
+AI is revolutionizing industries by enhancing efficiency, driving revenue growth, and opening new avenues for innovation. 
+The AI Disruption and Growth Index (AIDGI) is designed to quantify the impact of AI across different sectors. It aggregates key metrics to provide a comprehensive view of AI's transformative potential.
 
-<div class="subheader">Calculation Method</div>
+### Key Metrics
 
-The AIDGI is a weighted sum of these metrics, adjusted dynamically:
+1. **AI Adoption Rate**: The percentage of companies within an industry adopting AI technologies.
+2. **Efficiency Improvement**: The percentage increase in efficiency due to AI implementation.
+3. **Revenue Growth**: The percentage increase in revenue attributed to AI.
+4. **Market Size**: The size of the industry market in billions of USD, evaluated on a logarithmic scale.
+5. **Growth Potential**: The projected growth potential driven by AI, expressed as a percentage.
+
+### Calculation Method
+
+The AIDGI is computed using a weighted sum of these metrics. The weights reflect the relative importance of each factor and can be adjusted dynamically:
+
 """, unsafe_allow_html=True)
 
 st.latex(r'''
@@ -112,7 +121,7 @@ st.latex(r'''
 st.markdown("""
 ### Interactive Elements
 
-Adjust the weights using the sliders in the sidebar to see the impact on AIDGI for each industry.
+Use the sliders in the sidebar to adjust the weights of each metric and see how they influence the AIDGI for each industry. This interactivity allows for exploring different scenarios and understanding the sensitivity of the index to various factors.
 """)
 
 # Sidebar for weight adjustments
@@ -180,7 +189,37 @@ fig_grouped.update_layout(
 )
 st.plotly_chart(fig_grouped, use_container_width=True)
 
+# Radar Chart for AI Adoption and Growth Potential
+st.markdown("### Radar Chart: AI Adoption and Growth Potential")
+fig_radar = go.Figure()
 
+for industry in df['Industry']:
+    fig_radar.add_trace(go.Scatterpolar(
+        r=df[df['Industry'] == industry][['AI_Adoption', 'Growth_Potential']].values.flatten(),
+        theta=['AI_Adoption', 'Growth_Potential'],
+        fill='toself',
+        name=industry
+    ))
+
+fig_radar.update_layout(
+    polar=dict(
+        radialaxis=dict(
+            visible=True,
+            range=[0, 100]
+        )),
+    showlegend=True,
+    title="AI Adoption and Growth Potential by Industry"
+)
+
+st.plotly_chart(fig_radar, use_container_width=True)
+
+# Scatter Plot for AI Adoption vs Efficiency Improvement
+st.markdown("### Scatter Plot: AI Adoption vs Efficiency Improvement")
+fig_scatter = px.scatter(df, x='AI_Adoption', y='Efficiency_Improvement', color='Industry',
+                         title="AI Adoption vs Efficiency Improvement",
+                         labels={'AI_Adoption': 'AI Adoption (%)', 'Efficiency_Improvement': 'Efficiency Improvement (%)'},
+                         height=400)
+st.plotly_chart(fig_scatter, use_container_width=True)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
