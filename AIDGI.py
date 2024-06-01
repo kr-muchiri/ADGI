@@ -137,17 +137,14 @@ fig_pie = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
 fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
 st.plotly_chart(fig_pie, use_container_width=True)
 
-# Heatmap for Industry Comparison using Plotly
-st.markdown("### Industry Comparison Heatmap")
-heatmap_data = df.set_index('Industry').T
-fig_heatmap = px.imshow(heatmap_data, 
-                        labels=dict(color="Value"),
-                        x=heatmap_data.columns, 
-                        y=heatmap_data.index,
-                        color_continuous_scale='YlGnBu',
-                        aspect="auto")
-
-st.plotly_chart(fig_heatmap, use_container_width=True)
+# Grouped Bar Chart for Industry Comparison
+st.markdown("### Industry Comparison: Key Metrics")
+fig_grouped = px.bar(df.melt(id_vars=['Industry'], value_vars=['AI_Adoption', 'Efficiency_Improvement', 'Revenue_Growth', 'Market_Size', 'Growth_Potential']),
+                     x='Industry', y='value', color='variable', barmode='group',
+                     title="Comparison of Key Metrics Across Industries",
+                     labels={'value': 'Value', 'variable': 'Metric'},
+                     height=400, template='plotly_white')
+st.plotly_chart(fig_grouped, use_container_width=True)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
