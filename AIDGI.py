@@ -25,10 +25,7 @@ Welcome to the AI Disruption and Growth Index (AIDGI) app! This application was 
 - **Clear Communication**: Ability to explain complex concepts in a clear and concise manner.
 - **Passion for Technology**: A strong interest in how AI and technology are reshaping industries and creating opportunities for growth.
 
-I am excited about the possibility of contributing my skills and enthusiasm for technology to the Sequoia team.
 
-Best regards,  
-Muchiri Kahwai
 
 **Date Built**: May 31, 2024
 """)
