@@ -53,7 +53,7 @@ def calculate_aidgi(row, ai_weight, eff_weight, rev_weight, market_weight, growt
         growth_weight * np.exp(row['Growth_Potential'] / 100)
     )
 
-# Custom CSS for better styling
+# Custom CSS for better styling in both light and dark modes
 st.markdown("""
     <style>
         .main {
@@ -63,20 +63,30 @@ st.markdown("""
         .title {
             font-size: 2.5rem;
             font-weight: bold;
-            color: #003366;
+            color: var(--text-color);
         }
         .header {
             font-size: 1.75rem;
-            color: #003366;
+            color: var(--text-color);
             margin-top: 20px;
         }
         .subheader {
             font-size: 1.25rem;
-            color: #003366;
+            color: var(--text-color);
             margin-top: 10px;
         }
         .css-145kmo2 {
-            background-color: #f0f0f5;
+            background-color: var(--background-color);
+        }
+        :root {
+            --text-color: #003366;
+            --background-color: #f0f0f5;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text-color: #ffffff;
+                --background-color: #333333;
+            }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -170,7 +180,29 @@ fig_grouped.update_layout(
 )
 st.plotly_chart(fig_grouped, use_container_width=True)
 
+# Radar Chart for AI Adoption and Growth Potential
+st.markdown("### Radar Chart: AI Adoption and Growth Potential")
+fig_radar = go.Figure()
 
+for industry in df['Industry']:
+    fig_radar.add_trace(go.Scatterpolar(
+        r=df[df['Industry'] == industry][['AI_Adoption', 'Growth_Potential']].values.flatten(),
+        theta=['AI_Adoption', 'Growth_Potential'],
+        fill='toself',
+        name=industry
+    ))
+
+fig_radar.update_layout(
+    polar=dict(
+        radialaxis=dict(
+            visible=True,
+            range=[0, 100]
+        )),
+    showlegend=True,
+    title="AI Adoption and Growth Potential by Industry"
+)
+
+st.plotly_chart(fig_radar, use_container_width=True)
 
 # Scatter Plot for AI Adoption vs Efficiency Improvement
 st.markdown("### Scatter Plot: AI Adoption vs Efficiency Improvement")
