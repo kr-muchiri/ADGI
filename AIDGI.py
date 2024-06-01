@@ -148,6 +148,11 @@ fig_grouped = px.bar(df.melt(id_vars=['Industry'], value_vars=['AI_Adoption', 'E
                      title="Comparison of Key Metrics Across Industries",
                      labels={'value': 'Metric Value', 'variable': 'Metric'},
                      height=400, template='plotly_white')
+fig_grouped.update_layout(
+    xaxis_title="Industry",
+    yaxis_title="Metric Value",
+    legend_title_text='Metrics'
+)
 st.plotly_chart(fig_grouped, use_container_width=True)
 
 # Additional Interactive Elements
