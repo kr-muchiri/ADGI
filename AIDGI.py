@@ -25,7 +25,10 @@ Welcome to the AI Disruption and Growth Index (AIDGI) app! This application was 
 - **Clear Communication**: Ability to explain complex concepts in a clear and concise manner.
 - **Passion for Technology**: A strong interest in how AI and technology are reshaping industries and creating opportunities for growth.
 
+I am excited about the possibility of contributing my skills and enthusiasm for technology to the Sequoia team.
 
+Best regards,  
+Muchiri Kahwai
 
 **Date Built**: May 31, 2024
 """)
@@ -141,6 +144,10 @@ The data used in this app is derived from reputable industry reports and insight
 - [OECD's AI Policy Observatory](https://www.oecd.org/digital/artificial-intelligence/)
 - [Bank of America's AI Economic Impact](https://business.bofa.com/en-us/content/economic-impact-of-ai.html)
 
+### Note on Data Estimates
+
+The data provided here are rough estimates due to time constraints. A more robust model with precise data would be built for more accurate analysis, but these estimates serve as a foundational stepping stone for this demonstration.
+
 ### Interactive Elements
 
 Use the sliders in the sidebar to adjust the weights of each metric and see how they influence the AIDGI for each industry. This interactivity allows for exploring different scenarios and understanding the sensitivity of the index to various factors.
@@ -211,7 +218,37 @@ fig_grouped.update_layout(
 )
 st.plotly_chart(fig_grouped, use_container_width=True)
 
+# Radar Chart for AI Adoption and Growth Potential
+st.markdown("### Radar Chart: AI Adoption and Growth Potential")
+fig_radar = go.Figure()
 
+for industry in df['Industry']:
+    fig_radar.add_trace(go.Scatterpolar(
+        r=df[df['Industry'] == industry][['AI_Adoption', 'Growth_Potential']].values.flatten(),
+        theta=['AI_Adoption', 'Growth_Potential'],
+        fill='toself',
+        name=industry
+    ))
+
+fig_radar.update_layout(
+    polar=dict(
+        radialaxis=dict(
+            visible=True,
+            range=[0, 100]
+        )),
+    showlegend=True,
+    title="AI Adoption and Growth Potential by Industry"
+)
+
+st.plotly_chart(fig_radar, use_container_width=True)
+
+# Scatter Plot for AI Adoption vs Efficiency Improvement
+st.markdown("### Scatter Plot: AI Adoption vs Efficiency Improvement")
+fig_scatter = px.scatter(df, x='AI_Adoption', y='Efficiency_Improvement', color='Industry',
+                         title="AI Adoption vs Efficiency Improvement",
+                         labels={'AI_Adoption': 'AI Adoption (%)', 'Efficiency_Improvement': 'Efficiency Improvement (%)'},
+                         height=400)
+st.plotly_chart(fig_scatter, use_container_width=True)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
