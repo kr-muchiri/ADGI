@@ -119,6 +119,18 @@ st.latex(r'''
 ''')
 
 st.markdown("""
+### Rationale Behind the Metrics and Formula
+
+The chosen metrics and their weights are based on a comprehensive analysis of the factors that significantly impact AI's transformative potential in various industries:
+
+- **AI Adoption Rate**: A higher adoption rate indicates that more companies are leveraging AI, which generally leads to greater overall industry transformation. This metric has the highest weight (0.35) to reflect its importance.
+- **Efficiency Improvement**: AI's ability to enhance efficiency is a critical driver of its value proposition. Improvements in efficiency lead to cost savings and better resource utilization, which is why this metric is given a weight of 0.25.
+- **Revenue Growth**: The impact of AI on revenue growth is a direct indicator of its economic benefits. Although crucial, it is weighted at 0.20 to balance its influence with other factors.
+- **Market Size**: Larger markets provide more opportunities for AI to make a significant impact. Using the logarithm of market size helps normalize the scale and ensures that industries with extremely large markets do not disproportionately influence the index. This metric is weighted at 0.10.
+- **Growth Potential**: This metric captures the future prospects of AI in an industry. By using an exponential scale, we emphasize the significance of high growth potential in driving future transformations. This metric is also weighted at 0.10.
+
+By combining these metrics with their respective weights, the AIDGI provides a balanced and comprehensive view of how AI is disrupting and driving growth across different sectors.
+
 ### Interactive Elements
 
 Use the sliders in the sidebar to adjust the weights of each metric and see how they influence the AIDGI for each industry. This interactivity allows for exploring different scenarios and understanding the sensitivity of the index to various factors.
