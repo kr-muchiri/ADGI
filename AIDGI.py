@@ -28,28 +28,53 @@ def calculate_aidgi(row, ai_weight, eff_weight, rev_weight, market_weight, growt
 # Streamlit App
 st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="wide")
 
-st.title("AI Disruption and Growth Index (AIDGI)")
+# Custom CSS for better styling
+st.markdown("""
+    <style>
+        .main {
+            background-color: #f0f2f6;
+            padding: 20px;
+        }
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3E4E55;
+        }
+        .header {
+            font-size: 1.5rem;
+            color: #3E4E55;
+            margin-top: 20px;
+        }
+        .subheader {
+            font-size: 1.2rem;
+            color: #3E4E55;
+            margin-top: 10px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown('<div class="title">AI Disruption and Growth Index (AIDGI)</div>', unsafe_allow_html=True)
 
 # Detailed Introduction
 st.markdown("""
-## Introduction
+<div class="header">Introduction</div>
 
 AI is transforming various industries by improving efficiency, driving revenue growth, and creating new opportunities for growth. 
 To understand and quantify the impact of AI across different sectors, I have developed the AI Disruption and Growth Index (AIDGI). 
 The AIDGI is a composite score that reflects the level of AI disruption and growth potential in various industries based on several key factors.
 
-### Factors Considered
+<div class="subheader">Factors Considered</div>
 
-1. **AI Adoption Rate**: This factor measures how widely AI technologies are being adopted in an industry. A higher adoption rate indicates a greater integration of AI solutions, leading to significant transformations.
-2. **Efficiency Improvement**: AI often leads to better efficiency through automation, optimization, and enhanced decision-making. This factor captures the extent of efficiency gains attributed to AI.
-3. **Revenue Growth**: AI can drive substantial revenue growth by creating new products, services, and business models. This factor measures the impact of AI on revenue expansion.
-4. **Market Size**: The size of the market in which AI is being deployed is crucial. Larger markets have more opportunities for AI to create value. I use a logarithmic scale for market size to reflect its impact proportionately.
-5. **Growth Potential**: This factor considers the future potential for growth driven by AI. It is measured using an exponential scale to emphasize industries with high growth prospects.
+1. **AI Adoption Rate**: Measures how widely AI technologies are being adopted in an industry.
+2. **Efficiency Improvement**: Captures the extent of efficiency gains attributed to AI.
+3. **Revenue Growth**: Measures the impact of AI on revenue expansion.
+4. **Market Size**: Reflects the size of the market in which AI is being deployed, using a logarithmic scale.
+5. **Growth Potential**: Considers the future potential for growth driven by AI, using an exponential scale.
 
-### Calculation Method
+<div class="subheader">Calculation Method</div>
 
 The AIDGI is calculated using a weighted sum of these factors, with specific weights assigned to each factor based on its importance. The formula is:
-""")
+""", unsafe_allow_html=True)
 
 st.latex(r'''
 \text{AIDGI} = 0.35 \times \text{AI Adoption Rate} + 0.25 \times \text{Efficiency Improvement} + 0.2 \times \text{Revenue Growth} + 0.1 \times \log(\text{Market Size}) + 0.1 \times \exp(\text{Growth Potential} / 100)
