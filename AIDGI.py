@@ -56,8 +56,11 @@ def calculate_aidgi(row, ai_weight, eff_weight, rev_weight, market_weight, growt
 # Custom CSS for better styling in both light and dark modes
 st.markdown("""
     <style>
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
         .main {
-            background-color: #f5f7fa;
             padding: 20px;
         }
         .title {
@@ -74,9 +77,6 @@ st.markdown("""
             font-size: 1.25rem;
             color: var(--text-color);
             margin-top: 10px;
-        }
-        .css-145kmo2 {
-            background-color: var(--background-color);
         }
         :root {
             --text-color: #003366;
