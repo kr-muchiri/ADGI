@@ -259,7 +259,6 @@ The AI Disruption and Growth Index (AIDGI) provides valuable insights into the i
 - **Address Adoption Barriers**: For industries with lower AI Adoption, identify and address barriers to encourage wider adoption of AI technologies.
 - **Monitor Trends**: Continuously monitor AI trends and update the AIDGI to reflect the latest developments and shifts in the industry landscape.
 
-I look forward to the opportunity to bring my skills and passion for technology to the Sequoia team.
 
 Best regards,
 Muchiri Kahwai
