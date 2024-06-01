@@ -2,31 +2,34 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import seaborn as sns
+import matplotlib.pyplot as plt
 import numpy as np
 
-# About This App section at the top
-st.markdown("""
-## About This App
+# Sample data based on extracted insights
+data = {
+    'Industry': ['Healthcare', 'Finance', 'Retail', 'Manufacturing', 'Transportation', 'Education', 'Entertainment'],
+    'AI_Adoption': [75, 80, 70, 65, 60, 55, 50],
+    'Efficiency_Improvement': [30, 35, 25, 20, 15, 10, 20],
+    'Revenue_Growth': [20, 25, 15, 10, 5, 5, 10],
+    'Market_Size': [200, 180, 150, 170, 140, 120, 130],
+    'Growth_Potential': [90, 85, 80, 75, 70, 65, 60]
+}
 
-This app was created as part of my application for the Sequoia Summer Internship Opportunity. It demonstrates my technical skills in data analysis, interactive visualization, and understanding of AI's impact on various industries.
+df = pd.DataFrame(data)
 
-### Thought Process
+# Calculate AIDGI with updated formula
+def calculate_aidgi(row, ai_weight, eff_weight, rev_weight, market_weight, growth_weight):
+    return (
+        ai_weight * row['AI_Adoption'] +
+        eff_weight * row['Efficiency_Improvement'] +
+        rev_weight * row['Revenue_Growth'] +
+        market_weight * np.log(row['Market_Size']) +
+        growth_weight * np.exp(row['Growth_Potential'] / 100)
+    )
 
-1. **Identifying Key Metrics**: The key metrics considered for evaluating AI's impact include AI Adoption Rate, Efficiency Improvement, Revenue Growth, Market Size, and Growth Potential.
-2. **Weighted Analysis**: The AI Disruption and Growth Index (AIDGI) is calculated using a weighted sum of these factors, with the ability to adjust weights dynamically.
-3. **Interactive Visualizations**: Users can explore the impact of AI across different industries through interactive bar charts, heatmaps, and pie charts.
-
-### Skills Demonstrated
-
-- **Technical Background**: Proficiency in Python, data analysis with pandas, and interactive visualizations with Plotly and Seaborn.
-- **Clear Communication**: Clear and concise explanations of complex concepts, both in the app and in accompanying documentation.
-- **Passion for Technology**: A deep interest in how AI and technology are transforming industries and the potential for future growth.
-
-I look forward to the opportunity to bring my skills and passion for technology to the Sequoia team.
-
-Best regards,
-Muchiri Kahwai
-""")
+# Streamlit App
+st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="wide")
 
 # Custom CSS for better styling
 st.markdown("""
@@ -130,17 +133,13 @@ fig_pie = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
 fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
 st.plotly_chart(fig_pie, use_container_width=True)
 
-# Heatmap for Industry Comparison using Plotly
+# Heatmap for Industry Comparison
 st.markdown("### Industry Comparison Heatmap")
 heatmap_data = df.set_index('Industry').T
-fig_heatmap = px.imshow(heatmap_data, 
-                        labels=dict(color="Value"),
-                        x=heatmap_data.columns, 
-                        y=heatmap_data.index,
-                        color_continuous_scale='YlGnBu',
-                        aspect="auto")
-
-st.plotly_chart(fig_heatmap, use_container_width=True)
+fig_heatmap, ax = plt.subplots()
+sns.heatmap(heatmap_data, annot=True, cmap="YlGnBu", ax=ax)
+ax.set_title('Comparison of AI Metrics Across Industries')
+st.pyplot(fig_heatmap)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
