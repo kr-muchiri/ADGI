@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+import seaborn as sns
+import matplotlib.pyplot as plt
 import numpy as np
 
 # Sample data based on extracted insights
@@ -32,23 +35,26 @@ st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="
 st.markdown("""
     <style>
         .main {
-            background-color: #f0f2f6;
+            background-color: #f5f7fa;
             padding: 20px;
         }
         .title {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            color: #3E4E55;
+            color: #003366;
         }
         .header {
-            font-size: 1.5rem;
-            color: #3E4E55;
+            font-size: 1.75rem;
+            color: #003366;
             margin-top: 20px;
         }
         .subheader {
-            font-size: 1.2rem;
-            color: #3E4E55;
+            font-size: 1.25rem;
+            color: #003366;
             margin-top: 10px;
+        }
+        .css-145kmo2 {
+            background-color: #f0f0f5;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -118,6 +124,22 @@ fig = px.bar(df, x='Industry', y='AIDGI',
 
 # Show Plotly chart in Streamlit
 st.plotly_chart(fig, use_container_width=True)
+
+# Additional Visualizations
+st.markdown("### Weight Distribution")
+labels = ['AI Adoption Rate', 'Efficiency Improvement', 'Revenue Growth', 'Market Size', 'Growth Potential']
+values = [ai_weight, eff_weight, rev_weight, market_weight, growth_weight]
+fig_pie = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
+fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
+st.plotly_chart(fig_pie, use_container_width=True)
+
+# Heatmap for Industry Comparison
+st.markdown("### Industry Comparison Heatmap")
+heatmap_data = df.set_index('Industry').T
+fig_heatmap, ax = plt.subplots()
+sns.heatmap(heatmap_data, annot=True, cmap="YlGnBu", ax=ax)
+ax.set_title('Comparison of AI Metrics Across Industries')
+st.pyplot(fig_heatmap)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
