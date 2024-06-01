@@ -27,8 +27,10 @@ Welcome to the AI Disruption and Growth Index (AIDGI) app! This application was 
 
 I am excited about the possibility of contributing my skills and enthusiasm for technology to the Sequoia team.
 
-Best regards,
+Best regards,  
 Muchiri Kahwai
+
+**Date Built**: May 31, 2024
 """)
 
 # Sample data based on extracted insights
@@ -131,6 +133,17 @@ The chosen metrics and their weights are based on a comprehensive analysis of th
 
 By combining these metrics with their respective weights, the AIDGI provides a balanced and comprehensive view of how AI is disrupting and driving growth across different sectors.
 
+### Data Sources
+
+The data used in this app is derived from reputable industry reports and insights, including:
+
+- [McKinsey's State of AI Report](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai)
+- [Deloitte's State of AI in the Enterprise](https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consulting/us-state-of-gen-ai-report-q2.pdf)
+- [PwC's AI Study](https://www.pwc.com/gx/en/issues/data-and-analytics/publications/artificial-intelligence-study.html)
+- [KPMG's AI Insights](https://kpmg.com/be/en/home/insights/2023/07/ai-insights.html)
+- [OECD's AI Policy Observatory](https://www.oecd.org/digital/artificial-intelligence/)
+- [Bank of America's AI Economic Impact](https://business.bofa.com/en-us/content/economic-impact-of-ai.html)
+
 ### Interactive Elements
 
 Use the sliders in the sidebar to adjust the weights of each metric and see how they influence the AIDGI for each industry. This interactivity allows for exploring different scenarios and understanding the sensitivity of the index to various factors.
@@ -201,7 +214,29 @@ fig_grouped.update_layout(
 )
 st.plotly_chart(fig_grouped, use_container_width=True)
 
+# Radar Chart for AI Adoption and Growth Potential
+st.markdown("### Radar Chart: AI Adoption and Growth Potential")
+fig_radar = go.Figure()
 
+for industry in df['Industry']:
+    fig_radar.add_trace(go.Scatterpolar(
+        r=df[df['Industry'] == industry][['AI_Adoption', 'Growth_Potential']].values.flatten(),
+        theta=['AI_Adoption', 'Growth_Potential'],
+        fill='toself',
+        name=industry
+    ))
+
+fig_radar.update_layout(
+    polar=dict(
+        radialaxis=dict(
+            visible=True,
+            range=[0, 100]
+        )),
+    showlegend=True,
+    title="AI Adoption and Growth Potential by Industry"
+)
+
+st.plotly_chart(fig_radar, use_container_width=True)
 
 # Scatter Plot for AI Adoption vs Efficiency Improvement
 st.markdown("### Scatter Plot: AI Adoption vs Efficiency Improvement")
@@ -259,7 +294,8 @@ The AI Disruption and Growth Index (AIDGI) provides valuable insights into the i
 - **Address Adoption Barriers**: For industries with lower AI Adoption, identify and address barriers to encourage wider adoption of AI technologies.
 - **Monitor Trends**: Continuously monitor AI trends and update the AIDGI to reflect the latest developments and shifts in the industry landscape.
 
+I look forward to the opportunity to bring my skills and passion for technology to the Sequoia team.
 
-Best regards,
+Best regards,  
 Muchiri Kahwai
 """)
