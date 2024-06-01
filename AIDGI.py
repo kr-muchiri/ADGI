@@ -138,11 +138,15 @@ fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
 st.plotly_chart(fig_pie, use_container_width=True)
 
 # Grouped Bar Chart for Industry Comparison
-st.markdown("### Industry Comparison: Key Metrics")
+st.markdown("""
+### Industry Comparison: Key Metrics
+
+This grouped bar chart compares key metrics across different industries. The value represents the respective metric's measurement, such as the percentage for AI Adoption, Efficiency Improvement, Revenue Growth, and Growth Potential, and billion USD for Market Size.
+""")
 fig_grouped = px.bar(df.melt(id_vars=['Industry'], value_vars=['AI_Adoption', 'Efficiency_Improvement', 'Revenue_Growth', 'Market_Size', 'Growth_Potential']),
                      x='Industry', y='value', color='variable', barmode='group',
                      title="Comparison of Key Metrics Across Industries",
-                     labels={'value': 'Value', 'variable': 'Metric'},
+                     labels={'value': 'Metric Value', 'variable': 'Metric'},
                      height=400, template='plotly_white')
 st.plotly_chart(fig_grouped, use_container_width=True)
 
@@ -171,7 +175,7 @@ st.dataframe(filtered_df.style.format({
 fig2 = px.bar(filtered_df.melt(id_vars=["Industry"], value_vars=["AI_Adoption", "Efficiency_Improvement", "Revenue_Growth", "Market_Size", "Growth_Potential"]),
               x='variable', y='value',
               title=f"Detailed Metrics for {industry}",
-              labels={'variable': 'Metric', 'value': 'Value'},
+              labels={'variable': 'Metric', 'value': 'Metric Value'},
               template='plotly_white')
 
 st.plotly_chart(fig2, use_container_width=True)
