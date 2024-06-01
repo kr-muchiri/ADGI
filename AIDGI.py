@@ -7,9 +7,8 @@ import numpy as np
 # Streamlit App
 st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="wide")
 
-
 # Display the Sequoia logo
-st.image("sequoia_logo.png", width=400)  
+st.image("sequoia_logo.png", width=200)  # Adjust the width as needed
 
 # About This App section at the top
 st.markdown("""
@@ -167,11 +166,13 @@ if 'weights' not in st.session_state:
         'Growth Potential': 0.10
     }
 
-def update_weights(new_values):
-    total_weight = sum(new_values.values())
-    for key in new_values:
-        st.session_state.weights[key] = new_values[key] / total_weight
+def update_weights(new_weights):
+    total = sum(new_weights.values())
+    for key in new_weights:
+        new_weights[key] /= total
+    st.session_state.weights.update(new_weights)
 
+# Collect new weights from sliders
 new_weights = {}
 new_weights['AI Adoption Rate'] = st.sidebar.slider("AI Adoption Rate Weight", 0.0, 1.0, st.session_state.weights['AI Adoption Rate'], 0.01)
 new_weights['Efficiency Improvement'] = st.sidebar.slider("Efficiency Improvement Weight", 0.0, 1.0, st.session_state.weights['Efficiency Improvement'], 0.01)
