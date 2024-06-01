@@ -81,9 +81,9 @@ growth_weight /= total_weight
 df['AIDGI'] = df.apply(calculate_aidgi, axis=1, args=(ai_weight, eff_weight, rev_weight, market_weight, growth_weight))
 df.sort_values(by='AIDGI', ascending=False, inplace=True)
 
-# Display DataFrame with styling
+# Display DataFrame without styling
 st.write("## AI Impact Data")
-st.dataframe(df.style.background_gradient(cmap='viridis'))
+st.dataframe(df)
 
 # Interactive Bar Chart for AIDGI
 fig = px.bar(df, x='Industry', y='AIDGI',
@@ -107,7 +107,7 @@ with st.container():
 filtered_df = df[df['Industry'] == industry]
 
 st.write(f"## Detailed View for {industry}")
-st.dataframe(filtered_df.style.background_gradient(cmap='coolwarm'))
+st.dataframe(filtered_df)
 
 # Detailed Bar Charts
 fig2 = px.bar(filtered_df.melt(id_vars=["Industry"], value_vars=["AI_Adoption", "Efficiency_Improvement", "Revenue_Growth", "Market_Size", "Growth_Potential"]),
