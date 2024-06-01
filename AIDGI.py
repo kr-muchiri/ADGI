@@ -9,7 +9,7 @@ st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="
 
 
 # Display the Sequoia logo
-st.image("sequoia_logo.png", width=200)  
+st.image("sequoia_logo.png", width=400)  
 
 # About This App section at the top
 st.markdown("""
