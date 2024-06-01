@@ -8,7 +8,7 @@ import numpy as np
 st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="wide")
 
 # Display the Sequoia logo
-st.image("sequoia_logo.png", width=200)  # Adjust the width as needed
+st.image("sequoia_logo.png", width=400)  # Adjust the width as needed
 
 # About This App section at the top
 st.markdown("""
