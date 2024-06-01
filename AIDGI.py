@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
 
 # About This App section at the top
@@ -132,13 +130,17 @@ fig_pie = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
 fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
 st.plotly_chart(fig_pie, use_container_width=True)
 
-# Heatmap for Industry Comparison
+# Heatmap for Industry Comparison using Plotly
 st.markdown("### Industry Comparison Heatmap")
 heatmap_data = df.set_index('Industry').T
-fig_heatmap, ax = plt.subplots()
-sns.heatmap(heatmap_data, annot=True, cmap="YlGnBu", ax=ax)
-ax.set_title('Comparison of AI Metrics Across Industries')
-st.pyplot(fig_heatmap)
+fig_heatmap = px.imshow(heatmap_data, 
+                        labels=dict(color="Value"),
+                        x=heatmap_data.columns, 
+                        y=heatmap_data.index,
+                        color_continuous_scale='YlGnBu',
+                        aspect="auto")
+
+st.plotly_chart(fig_heatmap, use_container_width=True)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
