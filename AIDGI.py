@@ -180,37 +180,7 @@ fig_grouped.update_layout(
 )
 st.plotly_chart(fig_grouped, use_container_width=True)
 
-# Radar Chart for AI Adoption and Growth Potential
-st.markdown("### Radar Chart: AI Adoption and Growth Potential")
-fig_radar = go.Figure()
 
-for industry in df['Industry']:
-    fig_radar.add_trace(go.Scatterpolar(
-        r=df[df['Industry'] == industry][['AI_Adoption', 'Growth_Potential']].values.flatten(),
-        theta=['AI_Adoption', 'Growth_Potential'],
-        fill='toself',
-        name=industry
-    ))
-
-fig_radar.update_layout(
-    polar=dict(
-        radialaxis=dict(
-            visible=True,
-            range=[0, 100]
-        )),
-    showlegend=True,
-    title="AI Adoption and Growth Potential by Industry"
-)
-
-st.plotly_chart(fig_radar, use_container_width=True)
-
-# Scatter Plot for AI Adoption vs Efficiency Improvement
-st.markdown("### Scatter Plot: AI Adoption vs Efficiency Improvement")
-fig_scatter = px.scatter(df, x='AI_Adoption', y='Efficiency_Improvement', color='Industry',
-                         title="AI Adoption vs Efficiency Improvement",
-                         labels={'AI_Adoption': 'AI Adoption (%)', 'Efficiency_Improvement': 'Efficiency Improvement (%)'},
-                         height=400)
-st.plotly_chart(fig_scatter, use_container_width=True)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
