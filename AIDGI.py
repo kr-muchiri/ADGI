@@ -7,6 +7,10 @@ import numpy as np
 # Streamlit App
 st.set_page_config(page_title="AI Disruption and Growth Index (AIDGI)", layout="wide")
 
+
+# Display the Sequoia logo
+st.image("sequoia_logo.png", width=200)  
+
 # About This App section at the top
 st.markdown("""
 ## About This App
