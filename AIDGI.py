@@ -2,18 +2,16 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import seaborn as sns
-import matplotlib.pyplot as plt
 import numpy as np
 
 # Sample data based on extracted insights
 data = {
     'Industry': ['Healthcare', 'Finance', 'Retail', 'Manufacturing', 'Transportation', 'Education', 'Entertainment'],
-    'AI_Adoption': [75, 80, 70, 65, 60, 55, 50],
-    'Efficiency_Improvement': [30, 35, 25, 20, 15, 10, 20],
-    'Revenue_Growth': [20, 25, 15, 10, 5, 5, 10],
-    'Market_Size': [200, 180, 150, 170, 140, 120, 130],
-    'Growth_Potential': [90, 85, 80, 75, 70, 65, 60]
+    'AI_Adoption': [75, 80, 70, 65, 60, 55, 50],  # Percentage
+    'Efficiency_Improvement': [30, 35, 25, 20, 15, 10, 20],  # Percentage
+    'Revenue_Growth': [20, 25, 15, 10, 5, 5, 10],  # Percentage
+    'Market_Size': [200, 180, 150, 170, 140, 120, 130],  # Billion USD
+    'Growth_Potential': [90, 85, 80, 75, 70, 65, 60]  # Percentage
 }
 
 df = pd.DataFrame(data)
@@ -71,11 +69,11 @@ The AIDGI is a composite score that reflects the level of AI disruption and grow
 
 <div class="subheader">Factors Considered</div>
 
-1. **AI Adoption Rate**: Measures how widely AI technologies are being adopted in an industry.
-2. **Efficiency Improvement**: Captures the extent of efficiency gains attributed to AI.
-3. **Revenue Growth**: Measures the impact of AI on revenue expansion.
-4. **Market Size**: Reflects the size of the market in which AI is being deployed, using a logarithmic scale.
-5. **Growth Potential**: Considers the future potential for growth driven by AI, using an exponential scale.
+1. **AI Adoption Rate**: Measures how widely AI technologies are being adopted in an industry (percentage).
+2. **Efficiency Improvement**: Captures the extent of efficiency gains attributed to AI (percentage).
+3. **Revenue Growth**: Measures the impact of AI on revenue expansion (percentage).
+4. **Market Size**: Reflects the size of the market in which AI is being deployed, using a logarithmic scale (billion USD).
+5. **Growth Potential**: Considers the future potential for growth driven by AI, using an exponential scale (percentage).
 
 <div class="subheader">Calculation Method</div>
 
@@ -112,9 +110,15 @@ growth_weight /= total_weight
 df['AIDGI'] = df.apply(calculate_aidgi, axis=1, args=(ai_weight, eff_weight, rev_weight, market_weight, growth_weight))
 df.sort_values(by='AIDGI', ascending=False, inplace=True)
 
-# Display DataFrame without styling
+# Display DataFrame with clear metric labels
 st.write("## AI Impact Data")
-st.dataframe(df)
+st.dataframe(df.style.format({
+    "AI_Adoption": "{:.1f}%",
+    "Efficiency_Improvement": "{:.1f}%",
+    "Revenue_Growth": "{:.1f}%",
+    "Market_Size": "${:,.0f}B",
+    "Growth_Potential": "{:.1f}%"
+}))
 
 # Interactive Bar Chart for AIDGI
 fig = px.bar(df, x='Industry', y='AIDGI',
@@ -133,13 +137,17 @@ fig_pie = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.3)])
 fig_pie.update_layout(title_text='Weight Distribution for AIDGI Calculation')
 st.plotly_chart(fig_pie, use_container_width=True)
 
-# Heatmap for Industry Comparison
+# Heatmap for Industry Comparison using Plotly
 st.markdown("### Industry Comparison Heatmap")
 heatmap_data = df.set_index('Industry').T
-fig_heatmap, ax = plt.subplots()
-sns.heatmap(heatmap_data, annot=True, cmap="YlGnBu", ax=ax)
-ax.set_title('Comparison of AI Metrics Across Industries')
-st.pyplot(fig_heatmap)
+fig_heatmap = px.imshow(heatmap_data, 
+                        labels=dict(color="Value"),
+                        x=heatmap_data.columns, 
+                        y=heatmap_data.index,
+                        color_continuous_scale='YlGnBu',
+                        aspect="auto")
+
+st.plotly_chart(fig_heatmap, use_container_width=True)
 
 # Additional Interactive Elements
 st.markdown("### Select an Industry to View Detailed Metrics")
@@ -154,7 +162,13 @@ with st.container():
 filtered_df = df[df['Industry'] == industry]
 
 st.write(f"## Detailed View for {industry}")
-st.dataframe(filtered_df)
+st.dataframe(filtered_df.style.format({
+    "AI_Adoption": "{:.1f}%",
+    "Efficiency_Improvement": "{:.1f}%",
+    "Revenue_Growth": "{:.1f}%",
+    "Market_Size": "${:,.0f}B",
+    "Growth_Potential": "{:.1f}%"
+}))
 
 # Detailed Bar Charts
 fig2 = px.bar(filtered_df.melt(id_vars=["Industry"], value_vars=["AI_Adoption", "Efficiency_Improvement", "Revenue_Growth", "Market_Size", "Growth_Potential"]),
