@@ -4,5 +4,4 @@ pandas
 numpy
 matplotlib
 seaborn
-option_menu
-streamlit_option_menu
+streamlit-option-menu
